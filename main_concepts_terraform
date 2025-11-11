@@ -1,0 +1,173 @@
+🌍 Main Concepts in Terraform (with Brief Explanation)
+1️⃣ Providers
+
+👉 What it is:
+Providers are plugins that let Terraform interact with cloud platforms (like AWS, Azure, GCP, etc.) or services (like GitHub, Docker, Kubernetes).
+
+🧠 Example:
+The AWS provider allows Terraform to create AWS resources (EC2, S3, VPC, etc.).
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+
+💡 Think of providers as:
+
+The “bridge” between Terraform and your cloud or service.
+
+2️⃣ Resources
+
+👉 What it is:
+Resources are the actual infrastructure components that Terraform manages — such as servers, networks, and storage.
+
+🧠 Example:
+Creating an EC2 instance in AWS:
+
+resource "aws_instance" "my_ec2" {
+  ami           = "ami-0dee22c13ea7a9a67"
+  instance_type = "t2.micro"
+}
+
+
+💡 Think of resources as:
+
+The “building blocks” — what Terraform actually creates in the cloud.
+
+3️⃣ Variables
+
+👉 What it is:
+Variables make Terraform configurations reusable and flexible.
+They allow you to pass dynamic values (e.g., instance size, region).
+
+🧠 Example:
+
+variable "instance_type" {
+  default = "t2.micro"
+}
+
+resource "aws_instance" "my_ec2" {
+  ami           = "ami-0dee22c13ea7a9a67"
+  instance_type = var.instance_type
+}
+
+
+💡 Think of variables as:
+
+“Inputs” that make your Terraform code more dynamic and maintainable.
+
+4️⃣ Outputs
+
+👉 What it is:
+Outputs are used to display useful information after Terraform finishes execution — like instance IPs or resource IDs.
+
+🧠 Example:
+
+output "ec2_public_ip" {
+  value = aws_instance.my_ec2.public_ip
+}
+
+
+💡 Think of outputs as:
+
+“Results” — the values you want to see after Terraform runs.
+
+5️⃣ State File (terraform.tfstate)
+
+👉 What it is:
+Terraform keeps track of what it has created using a state file (terraform.tfstate).
+This helps it know what exists in your infrastructure so it can apply only necessary changes.
+
+🧠 Example:
+If you change your EC2 instance type from t2.micro → t2.small, Terraform uses the state file to detect the change and update the instance.
+
+💡 Think of the state as:
+
+Terraform’s “memory” — it records what’s deployed in your cloud.
+
+6️⃣ Plan & Apply
+
+👉 What it is:
+Terraform works in two phases:
+
+terraform plan → Shows what changes will be made.
+
+terraform apply → Actually makes those changes.
+
+🧠 Example:
+
+terraform plan
+terraform apply -auto-approve
+
+
+💡 Think of them as:
+
+“Dry run” (plan) and “execute” (apply).
+
+7️⃣ Modules
+
+👉 What it is:
+Modules are reusable sets of Terraform configurations that you can call from other Terraform files.
+
+🧠 Example:
+
+module "ec2_module" {
+  source = "./modules/ec2"
+  instance_type = "t2.micro"
+}
+
+
+💡 Think of modules as:
+
+“Functions” in Terraform — reusable code blocks for your infrastructure.
+
+8️⃣ Workspaces
+
+👉 What it is:
+Workspaces allow you to manage multiple environments (like dev, test, prod) using the same Terraform configuration.
+
+🧠 Example:
+
+terraform workspace new dev
+terraform workspace new prod
+terraform workspace list
+
+
+💡 Think of workspaces as:
+
+“Separate folders” inside Terraform to manage different environments safely.
+
+9️⃣ Provisioners
+
+👉 What it is:
+Provisioners are used to run scripts or commands on a resource after it’s created (like installing software on an EC2 instance).
+
+🧠 Example:
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo apt-get update",
+    "sudo apt-get install nginx -y"
+  ]
+}
+
+
+💡 Think of provisioners as:
+
+“Boot scripts” that configure your server after creation.
+
+🔟 Backends
+
+👉 What it is:
+Backends define where Terraform stores its state file.
+By default, it’s local (terraform.tfstate), but you can store it remotely (S3, Azure Storage, Terraform Cloud).
+
+🧠 Example:
+
+terraform {
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "dev/terraform.tfstate"
+    region = "ap-south-1"
+  }
+}
