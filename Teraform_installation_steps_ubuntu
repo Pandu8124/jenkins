@@ -1,0 +1,25 @@
+🧩 Terraform Installation Guide
+💻 Option 1 — Ubuntu
+
+🔹 Step 1: Update system
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+
+🔹 Step 2: Add HashiCorp’s official GPG key
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+🔹 Step 3: Add the official Terraform repository
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+🔹 Step 4: Install Terraform
+sudo apt-get update && sudo apt-get install terraform -y
+
+🔹 Step 5: Verify installation
+terraform -version
+
+✅ You should see output like:
+
+Terraform v1.9.6
+on linux_amd64
+
+
+
